@@ -13,19 +13,6 @@ export default class PortfolioContainer extends Component {
         }
     }
 
-    getPortfolioItems = () => {
-        axios
-          .get('https://trevorwalker.devcamp.space/portfolio/portfolio_items')
-          .then(response => {
-            this.setState({
-              data: response.data.portfolio_items
-            })
-          })
-         .catch(error => {
-            console.log(error);
-          })
-        }
-
     handleFilter = (filter) => {
         this.setState({
             data: this.state.data.filter(item => {
@@ -33,11 +20,25 @@ export default class PortfolioContainer extends Component {
             })
         })
     }
+    
+    getPortfolioItems = () => {
+        axios
+            .get('https://trevorwalker.devcamp.space/portfolio/portfolio_items')
+            .then(response => {
+                this.setState({
+                    data: response.data.portfolio_items
+                })
+            })
+            .catch(error => {
+                console.log(error);
+            })
+            }
+
 
     portfolioItems = () => {
-
+    
         return this.state.data.map(item => {
-            return <PortfolioItem title={item.name} url={item.url} slug={item.id}/>
+            return <PortfolioItem key={item.id} item={item} />
         })
     }
 
