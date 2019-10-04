@@ -1,9 +1,11 @@
 import React from 'react'
+import PortfolioContainer from './../portfolio/portfolio-container'
 
 const HomeComponent = () => {
     return (
         <div className="homepage">
-            <h1>Home Page</h1>
+            <h2>Home Page</h2>
+            <PortfolioContainer/>
         </div>
     )
 }

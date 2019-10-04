@@ -1,9 +1,14 @@
 import React from 'react'
+import { Link } from "react-router-dom"
 
 const BlogComponent = () => {
     return (
-        <div className="blog">
-            <h1>Blog Page</h1>
+        <div>
+            <h2>Blog Page</h2>
+
+            <div>
+                <Link to="/about">Read more about me!</Link>
+            </div>
         </div>
     )
 }

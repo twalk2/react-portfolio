@@ -19,19 +19,17 @@ export default class App extends Component {
       <div className='app'>
         <Router>
           <div>
-        <NavigationContainer />
-        <Switch>
-          <Route exact path='/' component={Home} />
-          <Route path='/about' component={About} />
-          <Route path='/contact' component={Contact} />
-          <Route path='/blog' component={Blog} />
-        </Switch>
+            <h1>Trevor Walker's Portfolio</h1>
+            <div>{moment().format('MMMM Do YYYY, h:mm:ss a')}</div>
+            <NavigationContainer />
+              <Switch>
+                <Route exact path='/' component={Home} />
+                <Route path='/about' component={About} />
+                <Route path='/contact' component={Contact} />
+                <Route path='/blog' component={Blog} />
+              </Switch>
           </div>
         </Router>
-
-        <h1>Trevor Walker's Portfolio</h1>
-        <div>{moment().format('MMMM Do YYYY, h:mm:ss a')}</div>
-        <PortfolioContainer/>
       </div>
     );
   } 
