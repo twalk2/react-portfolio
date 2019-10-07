@@ -5,7 +5,7 @@ import PortfolioItem from "./portfolio-item";
 export default class PortfolioContainer extends Component {
     constructor() {
         super()
-        
+
         this.state = {
             pageTitle: "Welcome to my portfolio",
             isLoading: false,
@@ -20,7 +20,7 @@ export default class PortfolioContainer extends Component {
             })
         })
     }
-    
+
     getPortfolioItems = () => {
         axios
             .get('https://trevorwalker.devcamp.space/portfolio/portfolio_items')
@@ -32,11 +32,11 @@ export default class PortfolioContainer extends Component {
             .catch(error => {
                 console.log(error);
             })
-            }
+    }
 
 
     portfolioItems = () => {
-    
+
         return this.state.data.map(item => {
             return <PortfolioItem key={item.id} item={item} />
         })
@@ -50,7 +50,7 @@ export default class PortfolioContainer extends Component {
         if (this.state.isLoading) {
             return <div>Loading...</div>
         }
-        
+
         return (
             <div>
                 <h2>{this.state.pageTitle}</h2>
@@ -58,8 +58,9 @@ export default class PortfolioContainer extends Component {
                 <button onClick={() => this.handleFilter('eCommerce')}>eCommerce</button>
                 <button onClick={() => this.handleFilter('Scheduling')}>Scheduling</button>
                 <button onClick={() => this.handleFilter('Enterprise')}>Enterprise</button>
-
-                {this.portfolioItems()}
+                <div className="portfolio-items-wrapper">
+                    {this.portfolioItems()}
+                </div>
             </div>
         )
     }
