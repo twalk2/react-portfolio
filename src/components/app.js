@@ -26,11 +26,17 @@ export default class App extends Component {
     });
   };
 
-  handleUnsuccessfulLogin() {
+  handleUnsuccessfulLogin = () => {
     this.setState({
       loggedInStatus: "NOT_LOGGED_IN"
     });
-  }
+  };
+
+  handleSuccessfulLogout = () => {
+    this.setState({
+      loggedInStatus: "NOT_LOGGED_IN"
+    });
+  };
 
   checkLoginStatus = () => {
     return axios
@@ -62,12 +68,19 @@ export default class App extends Component {
     this.checkLoginStatus();
   }
 
+  authorizedPages = () => {
+    return [<Route path="/blog" component={Blog} />];
+  };
+
   render() {
     return (
       <div className="container">
         <Router>
           <div>
-            <NavigationContainer />
+            <NavigationContainer
+              loggedInStatus={this.state.loggedInStatus}
+              handleSuccessfulLogout={this.handleSuccessfulLogout}
+            />
             <h2>{this.state.loggedInStatus}</h2>
             <Switch>
               <Route exact path="/" component={Home} />
@@ -83,7 +96,9 @@ export default class App extends Component {
               />
               <Route path="/about" component={About} />
               <Route path="/contact" component={Contact} />
-              <Route path="/blog" component={Blog} />
+              {this.state.loggedInStatus === "LOGGED_IN"
+                ? this.authorizedPages()
+                : null}
               <Route
                 exact
                 path="/portfolio/:slug"
