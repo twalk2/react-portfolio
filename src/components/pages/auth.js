@@ -1,7 +1,21 @@
 import React, { Component } from "react";
 import loginimg from "../../../static/assets/images/auth/login.jpg";
+import Login from "../auth/login";
 
 export default class Auth extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  handleSuccessfulAuth = () => {
+    this.props.handleSuccessfulLogin();
+    this.props.history.push("/");
+  };
+
+  handleUnsuccessfulAuth = () => {
+    this.props.handleUnsuccessfulLogin();
+  };
+
   render() {
     return (
       <div className="auth-page-wrapper">
@@ -13,7 +27,10 @@ export default class Auth extends Component {
         />
 
         <div className="right-column">
-          <h1>Login component goes here...</h1>
+          <Login
+            handleSuccessfulAuth={this.handleSuccessfulAuth}
+            handleUnsuccessfulAuth={this.handleUnsuccessfulAuth}
+          />
         </div>
       </div>
     );

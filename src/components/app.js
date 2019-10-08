@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import axios from "axios";
 
 import NavigationContainer from "./navigation/navigation-container";
 import Home from "./pages/Home";
@@ -11,18 +12,78 @@ import Auth from "./pages/auth";
 import NoMatch from "./pages/no-match";
 
 export default class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loggedInStatus: "NOT_LOGGED_IN"
+    };
+  }
+
+  handleSuccessfulLogin = () => {
+    this.setState({
+      loggedInStatus: "LOGGED_IN"
+    });
+  };
+
+  handleUnsuccessfulLogin() {
+    this.setState({
+      loggedInStatus: "NOT_LOGGED_IN"
+    });
+  }
+
+  checkLoginStatus = () => {
+    return axios
+      .get("https://api.devcamp.space/logged_in", {
+        withCredentials: true
+      })
+      .then(response => {
+        const loggedIn = response.data.logged_in;
+        const loggedInStatus = this.state.loggedInStatus;
+
+        if (loggedIn && loggedInStatus === "LOGGED_IN") {
+          return loggedIn;
+        } else if (loggedIn && loggedInStatus === "NOT_LOGGED_IN") {
+          this.setState({
+            loggedInStatus: "LOGGED_IN"
+          });
+        } else if (!loggedIn && loggedInStatus === "NOT_LOGGED_IN") {
+          this.setState({
+            loggedInStatus: "NOT_LOGGED_IN"
+          });
+        }
+      })
+      .catch(error => {
+        console.log("Error", error);
+      });
+  };
+
+  componentDidMount() {
+    this.checkLoginStatus();
+  }
+
   render() {
     return (
       <div className="container">
         <Router>
           <div>
             <NavigationContainer />
+            <h2>{this.state.loggedInStatus}</h2>
             <Switch>
               <Route exact path="/" component={Home} />
+              <Route
+                path="/auth"
+                render={props => (
+                  <Auth
+                    {...props}
+                    handleSuccessfulLogin={this.handleSuccessfulLogin}
+                    handleUnsuccessfulLogin={this.handleUnsuccessfulLogin}
+                  />
+                )}
+              />
               <Route path="/about" component={About} />
               <Route path="/contact" component={Contact} />
               <Route path="/blog" component={Blog} />
-              <Route path="/auth" component={Auth} />
               <Route
                 exact
                 path="/portfolio/:slug"
