@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import BlogModal from "../modals/blog-modal";
 
 import BlogItem from "../blog/blog-item";
 
@@ -13,11 +14,31 @@ class Blog extends Component {
       blogItems: [],
       totalCount: 0,
       currentPage: 0,
-      isLoading: true
+      isLoading: true,
+      blogModalIsOpen: false
     };
 
     window.addEventListener("scroll", this.onScroll, false);
   }
+
+  handleSuccessfulNewBlogSubmission = blog => {
+    this.setState({
+      blogModalIsOpen: false,
+      blogItems: [blog].concat(this.state.blogItems)
+    });
+  };
+
+  handleModalClose = () => {
+    this.setState({
+      blogModalIsOpen: false
+    });
+  };
+
+  handleNewBlogClick = () => {
+    this.setState({
+      blogModalIsOpen: true
+    });
+  };
 
   onScroll = () => {
     if (
@@ -74,6 +95,20 @@ class Blog extends Component {
 
     return (
       <div className="blog-container">
+        <BlogModal
+          handleSuccessfulNewBlogSubmission={
+            this.handleSuccessfulNewBlogSubmission
+          }
+          handleModalClose={this.handleModalClose}
+          modalIsOpen={this.state.blogModalIsOpen}
+        />
+
+        <div className="new-blog-link">
+          <a onClick={this.handleNewBlogClick}>
+            <FontAwesomeIcon icon="plus-circle" />
+          </a>
+        </div>
+
         <div className="content-container">{blogRecords}</div>
 
         {this.state.isLoading ? (
